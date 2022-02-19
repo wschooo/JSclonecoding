@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>세글자 쿵쿵따</title>
+</head>
+<body>
+    <div><span id="startNum">1</span>번 참가자</div>
+   <div>제시어: <span id="word"></span></div> <!-- 제시어: 를 <span>태그 안에 넣으면 새로운 값이 들어올 때 통째로 바뀜-->
+    <input type="text">
+    <button>답하기</button>
+<script>
+        const number = parseInt(prompt('몇 명이 참가하나요?'),10);// parseInt(i,숫자)에서 숫자는 진수를 지정. 생략하면 기본 10진수.
+        
+        if(number){ 
+        const $input = document.querySelector('input');
+        const $button = document.querySelector('button');
+        const $startNum = document.querySelector('#startNum');
+        const $word = document.querySelector('#word');
+        let word;
+        let newWord;
+        
+        function onClick() { 
+            if(newWord.length === 3){
+                
+                if(!word){//최초 시작일 떄
+                /*if(word[word.length] !== 3){
+                    alert("세 글자로 입력하세요");
+                }
+                */
+                word = newWord;
+                //확인용 console.log(word); 
+                $word.textContent = word;
+                // const startNum = parseInt($startNum.textContent); 해당 변수를 이 위치(if문 안)에 잘못 집어넣었더니 오류. 위치확인 잘 할것
+                
+            }
+        const startNum = parseInt($startNum.textContent);
+                if(startNum === number){
+                    $startNum.textContent = 1;
+                }
+                else{
+                    $startNum.textContent = startNum + 1;
+                }
+                if(word[word.length-1] === newWord[0]){//최초의 참가자 다음번째 사람부터 지켜야할 규칙
+                    word = newWord;
+                    $word.textContent = word;
+                }
+                else{
+                    alert("규칙을 지켜주세요");
+                    $startNum.textContent = startNum; //onClick을 하고나서 규칙에 위배되더라도 참가자 번호가 올라가버리는 것을 방지
+                }
+                
+        }
+        else{
+            alert("세 글자로 입력하세요");
+        }
+        $input.value='';
+    }
+
+        
+       
+
+        function onInput(event) {
+            newWord = event.target.value;
+        }
+        
+        $input.addEventListener('input', onInput);
+        $button.addEventListener('click', onClick);
+        }
+        else{
+            alert("다음에 또 이용해주세요");
+        }
+        
+</script>
+</body>
+</html>
