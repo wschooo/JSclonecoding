@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>계산기</title>
+    <style>
+        * { box-sizing: border-box;}
+        #result { width: 180px; height: 50px; margin: 5px;  text-align: right;}
+        #operator { width: 50px; height: 50px; margin: 5px;  text-align: center;}
+        button { width: 50px; height: 50px; margin: 5px }
+    </style>
+</head>
+<body>
+    <!-- 계산기 형태 구현-->
+    <input readonly id = "operator">
+    <input readonly type = "number" id = "result">
+    <div class = "row">
+        <button id = "num-7">7</button>
+        <button id = "num-8">8</button>
+        <button id = "num-9">9</button>
+        <button id = "plus">+</button>
+    </div>
+    <div class = "row">
+        <button id = "num-4">4</button>
+        <button id = "num-5">5</button>
+        <button id = "num-6">6</button>
+        <button id = "divide">/</button>
+    </div>
+    <div class = "row">
+      <button id = "num-1">1</button>
+      <button id = "num-2">2</button>
+      <button id = "num-3">3</button>
+      <button id = "minus">-</button>
+  </div>
+    <div class = "row">
+        <button id = "clear">C</button>
+        <button id = "num-0">0</button>
+        <button id = "calculate">=</button>
+        <button id = "multiply">*</button>
+    </div>
+    <script>
+        //변수 만들기
+        let numOne = '';
+        let operator = '';
+        let numTwo = '';
+
+        //태그 선택
+        const $operator = document.querySelector('#operator');
+        const $result = document.querySelector('#result');
+
+         //숫자클릭 이벤트의 콜백함수를 고차함수로(2)
+         const onClickNumber = (number) => () => {
+            if(!operator){ //if중첩 + else문 줄이기
+                numOne += number;
+                $result.value += number;
+                return;
+            }
+
+            /*음수 계산 추가(값이 두 번 더해져서 출력되는 문제)
+            if(operator === '-' && !numOne){
+                numOne = operator + number;
+                $result.value = operator + number;
+            }
+            */
+
+            if(!numTwo){
+                $result.value = '';
+            }
+                numTwo += number;
+                $result.value += number;
+            
+        }   
+        
+
+        /*고차함수가 아닌 숫자값을 그대로 저장해버리는 콜백함수(2)
+        const onClickNumber = (event) => {
+            if(operator){
+                numTwo += event.target.textContent;
+            }
+            else {
+                numOne += event.target.textContent;
+            }
+            $result.value = event.target.textContent;
+        }
+        */
+
+        /*연산자 클릭 이벤트의 콜백함수를 고차함수로(2)
+        const onClickOperator = (op) => () =>{
+            if(numOne){
+                operator += op;
+                $operator.value += op;
+            }
+            else{
+                alert('숫자를 먼저 입력하세요.');
+            }
+        }
+        */
+
+
+        //고차함수가 아닌 연산자값을 그대로 저장해버리는 콜백함수(2)
+        const onClickOperator = (event) => { //$operator를 클릭하면
+            if(numTwo){ //numTwo 변수의 값이 있을 때
+                switch(operator){ //계산
+                case '+': $result.value = parseInt(numOne) + parseInt(numTwo);
+                break;
+                case '-': $result.value = parseInt(numOne) - parseInt(numTwo);
+                break;
+                case '/': $result.value = parseInt(numOne) / parseInt(numTwo);
+                break;
+                case '*': $result.value = parseInt(numOne) * parseInt(numTwo);
+                break;
+            }
+                numOne = $result.value; // 계산결과를 다시 numOne변수에 저장하고
+                numTwo = '';    // numTwo변수 비워주기
+                $operator.value = '';
+                operator = '';
+                }
+                if(numOne){ //numOne 변수에만 값이 있으면
+                operator += event.target.textContent;   // 클릭한 연산자 값을 operator변수에 그대로 저장하고
+                $operator.value += event.target.textContent;    // $operator에 연산자 값 표시
+                }
+
+                //$operator를 연속으로 클릭하면 화면과 변수에 값이 계속 누적되는 문제
+                if(operator){
+                    operator = '';  // 변수값과
+                    $operator.value = ''   //화면에 출력되는 값을 비워버리고 
+                    //operator += event.target.textContent;   //새로 들어온 값과
+                    //$operator.value += event.target.textContent;    //출력값 저장
+                }
+                    //음수 계산을 위해 $operator를 클릭할 때 마다 값을 바로 저장 및 출력
+                    operator += event.target.textContent;   //새로 들어온 값과
+                    $operator.value += event.target.textContent;    //출력값 저장
+
+    }       
+       
+
+        //숫자를 클릭했을 때의 이벤트 생성(1), 연산자를 클릭했을 때의 이벤트 생성(1)
+        //콜백함수 생성 이후 calculate와 clear의 작동 추가(3)
+        document.querySelector('#num-0').addEventListener('click', onClickNumber('0'));
+        document.querySelector('#num-1').addEventListener('click', onClickNumber('1'));
+        document.querySelector('#num-2').addEventListener('click', onClickNumber('2'));
+        document.querySelector('#num-3').addEventListener('click', onClickNumber('3'));
+        document.querySelector('#num-4').addEventListener('click', onClickNumber('4'));
+        document.querySelector('#num-5').addEventListener('click', onClickNumber('5'));
+        document.querySelector('#num-6').addEventListener('click', onClickNumber('6'));
+        document.querySelector('#num-7').addEventListener('click', onClickNumber('7'));
+        document.querySelector('#num-8').addEventListener('click', onClickNumber('8'));
+        document.querySelector('#num-9').addEventListener('click', onClickNumber('9'));
+        document.querySelector('#plus').addEventListener('click', onClickOperator);
+        document.querySelector('#minus').addEventListener('click', onClickOperator);
+        document.querySelector('#divide').addEventListener('click', onClickOperator);
+        document.querySelector('#multiply').addEventListener('click', onClickOperator);
+        document.querySelector('#calculate').addEventListener('click', () => {
+            if(numTwo){
+            switch(operator){
+                case '+': $result.value = parseInt(numOne) + parseInt(numTwo);
+                break;
+                case '-': $result.value = parseInt(numOne) - parseInt(numTwo);
+                break;
+                case '/': $result.value = parseInt(numOne) / parseInt(numTwo);
+                break;
+                case '*': $result.value = parseInt(numOne) * parseInt(numTwo);
+                break;
+            }
+            $operator.value = '';
+            numOne = $result.value;
+            operator = '';
+            numTwo = ''; //numTwo변수를 비워줘야 $result.value가 numOne이 된 이후에 다시 새로 들어온 값이 numTwo가 되어 연속계산이 되므로
+        }
+        });
+        document.querySelector('#clear').addEventListener('click', () => {
+            numOne = '';
+            numTwo = '';
+            operator = '';
+            $operator.value = '';
+            $result.value = '';
+        });
+        
+
+
+        /*콜백함수 변경
+        document.querySelector('#num-0').addEventListener('click', onClickNumber);
+        document.querySelector('#num-1').addEventListener('click', onClickNumber);
+        document.querySelector('#num-2').addEventListener('click', onClickNumber);
+        document.querySelector('#num-3').addEventListener('click', onClickNumber);
+        document.querySelector('#num-4').addEventListener('click', onClickNumber);
+        document.querySelector('#num-5').addEventListener('click', onClickNumber);
+        document.querySelector('#num-6').addEventListener('click', onClickNumber);
+        document.querySelector('#num-7').addEventListener('click', onClickNumber);
+        document.querySelector('#num-8').addEventListener('click', onClickNumber);
+        document.querySelector('#num-9').addEventListener('click', onClickNumber);
+        */
+
+        
+        
+    </script>
+</body>
+</html>
