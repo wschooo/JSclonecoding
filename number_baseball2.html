@@ -18,10 +18,17 @@
       const $logs = document.querySelector('#logs');
     
       //1. 숫자를 뽑기위한 배열 만들기
+      /*
       const numbers = [];
       for(let i = 0; i < 9; i++){
         numbers.push(i + 1);
       }
+      */
+
+      const numbers = Array(9).fill(0).map((element, index) => { //Array(9) -> length가 9인 빈배열 생성, fill(0) ->각 요소를 0으로, map ->기존 배열의 요소를 일대일로 다른 값으로 바꾸어 새로운 배열을 만듦
+        return index + 1;
+      });
+      console.log
 
       //2. 무작위 숫자 4개 뽑기
       const answer = [];
@@ -65,6 +72,22 @@
           return;
         }
         //4. 게임 조건 판단(몇 스트라이크 몇 볼인지)
+
+        let strike = 0;
+        let ball = 0;
+        answer.forEach((element, i) => { //각각의 요소와 index에 대해 함수를 실행. forEach는 반복문 효과를 냄. 인수로 함수를 넣고, 함수가 각각의 배열 요소들에 순서대로 적용되는 구조
+          const index = value.indexOf(element) //value의 index
+          if(index > -1){
+            if(index === i){ // value의 index와 answer의 index가 같을 때 즉, 같은 자리
+              strike++;
+            }
+            else{
+              ball++;
+            }
+          }
+        })
+
+        /*
         let strike = 0;
         let ball = 0;
         //4-1 아웃 추가
@@ -81,6 +104,8 @@
             }
           }
         }
+        */
+
         if (strike === 0 && ball === 0){
           out += 1;
           $logs.append(`${out} 아웃`, document.createElement('br'));
@@ -92,8 +117,10 @@
           $logs.append(`패배 했습니다. 정답은 ${answer.join('')} 입니다`);
           return;
         }
+        
         tries.push(value);
       });
+      
     </script>
 </body>
 </html>
