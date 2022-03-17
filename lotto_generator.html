@@ -32,7 +32,7 @@
             const random = Math.floor(Math.random() * numbers.length) //0~44(인덱스 번호) 사이 무작위 숫자
             const spliceArray = numbers.splice(random, 1); 
             const value = spliceArray[0];
-            shuffle.push(value);
+            shuffle.push(value); //뽑은 숫자를 push
         }
         console.log(shuffle);
     </script>
