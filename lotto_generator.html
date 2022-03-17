@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로또 추첨기</title>
+    <style>
+        .ball {
+            display: inline-block;
+            border: 1px solid black;
+            border-radius: 20px;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 20px;
+            text-align: center;
+            margin-right: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id = 'result'>추첨 결과</div>
+    <div id = 'bonus'>보너스 번호</div>
+    <script>
+        //1.번호뽑기
+        const numbers = Array(45).fill().map((v, i) => i + 1); //1~45번까지의 번호 출력
+        //2.숫자 섞기
+        //피셔-예이츠 셔플
+        const shuffle = [];
+        while (numbers.length > 0){
+            const random = Math.floor(Math.random() * numbers.length) //0~44(인덱스 번호) 사이 무작위 숫자
+            const spliceArray = numbers.splice(random, 1); 
+            const value = spliceArray[0];
+            shuffle.push(value);
+        }
+        console.log(shuffle);
+    </script>
+</body>
+</html>
