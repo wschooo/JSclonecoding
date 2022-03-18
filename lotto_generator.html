@@ -25,16 +25,57 @@
     <script>
         //1.번호뽑기
         const numbers = Array(45).fill().map((v, i) => i + 1); //1~45번까지의 번호 출력
+
         //2.숫자 섞기
         //피셔-예이츠 셔플
+        //7개의 랜덤한 숫자를 하나씩 뽑는게 아닌, 전체에서 45개의 랜덤한 숫자를 뽑아서 앞에서부터 7개를 가져오기
         const shuffle = [];
         while (numbers.length > 0){
             const random = Math.floor(Math.random() * numbers.length) //0~44(인덱스 번호) 사이 무작위 숫자
-            const spliceArray = numbers.splice(random, 1); 
-            const value = spliceArray[0];
-            shuffle.push(value); //뽑은 숫자를 push
+            const spliceArray = numbers.splice(random, 1); //splice의 return값을 저장(numbers에서는 계속 무작위 숫자가 하나씩 빠지며, splice(random, 1)은 그자체로 리턴값을 반환함)
+            const value = spliceArray[0]; //return값을 저장하고
+            shuffle.push(value); //빈배열 shuffle에 push
         }
-        console.log(shuffle);
+        //console.log(shuffle);
+
+        //3. 공 정렬하기(오름차순)
+        const balls = shuffle.splice(0, 6).sort((a, b) => (a) - (b));
+        const bonusNum = shuffle[6];
+        //console.log(balls, bonusNum);
+
+        /*4. 숫자 출력(일정 시간 이후)
+        //setTimeout 함수
+        setTimeout (() => {
+        내용
+        }, 밀리초); //밀리초 : 0.001초, 천 분의 1초, 인수로 넣은 함수가 지정된 밀리초 이후 실행 됨
+        const $result = document.querySelector('#result');
+        setTimeout(() => {
+        const $ball = document.createElement('div');
+        $ball.className = 'ball';
+        $ball.textContent = balls[0];
+        $result.appendChild($ball);
+        }, 1000);
+        */
+
+        //5. 총 6개의 숫자를 출력해야하므로 반복
+        const $result = document.querySelector('#result');
+        for(let i = 0; i < balls.length; i++) {
+        setTimeout(() => {
+        const $ball = document.createElement('div');
+        $ball.className = 'ball';
+        $ball.textContent = balls[i];
+        $result.appendChild($ball);
+        }, 1000 * (i + 1)); //6개의 숫자를 1초 간격으로 하나씩 표시하기 위해 1000 * (i + 1), * (i + 1)이 없다면 1초 후 6개의 숫자가 한번에 표시 됨
+        }
+
+        //6. 보너스 번호 출력
+        const $bonus = document.querySelector('#bonus');
+        setTimeout(() => {
+        const $ball = document.createElement('div');
+        $ball.className = 'ball';
+        $ball.textContent = bonusNum;
+        $result.appendChild($ball);
+        }, 7000);
     </script>
 </body>
 </html>
