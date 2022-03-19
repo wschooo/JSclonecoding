@@ -43,6 +43,29 @@
         const bonusNum = shuffle[6];
         //console.log(balls, bonusNum);
 
+        //7. 공에 색깔 입히기
+        //색깔을 넣어줄 함수 생성
+        function ballColor(number, $tag) {
+            if (number < 10) {
+                $tag.style.backgroundColor = 'yellow';
+            }
+            else if (number < 20) {
+                $tag.style.backgroundColor = 'blue';
+                $tag.style.color = 'white';
+            }
+            else if (number < 30) {
+                $tag.style.backgroundColor = 'red';
+                $tag.style.color = 'white';
+            }
+            else if (number < 40) {
+                $tag.style.backgroundColor = 'gray';
+                $tag.style.color = 'white';
+            } else {
+                $tag.style.backgroundColor = 'green';
+                $tag.style.color = 'white';
+            }
+        }
+
         /*4. 숫자 출력(일정 시간 이후)
         //setTimeout 함수
         setTimeout (() => {
@@ -57,7 +80,7 @@
         }, 1000);
         */
 
-        //5. 총 6개의 숫자를 출력해야하므로 반복
+        /*5. 총 6개의 숫자를 출력해야하므로 반복
         const $result = document.querySelector('#result');
         for(let i = 0; i < balls.length; i++) {
         setTimeout(() => {
@@ -67,8 +90,9 @@
         $result.appendChild($ball);
         }, 1000 * (i + 1)); //6개의 숫자를 1초 간격으로 하나씩 표시하기 위해 1000 * (i + 1), * (i + 1)이 없다면 1초 후 6개의 숫자가 한번에 표시 됨
         }
+        */
 
-        //6. 보너스 번호 출력
+        /*6. 보너스 번호 출력
         const $bonus = document.querySelector('#bonus');
         setTimeout(() => {
         const $ball = document.createElement('div');
@@ -76,6 +100,31 @@
         $ball.textContent = bonusNum;
         $result.appendChild($ball);
         }, 7000);
+        */
+
+        //중복 구문 줄이기
+        const $result = document.querySelector('#result');
+        function lottoBalls(number, $parent){
+            const $ball = document.createElement('div');
+            $ball.className = 'ball';
+            ballColor(number, $ball);
+            $ball.textContent = number;
+            $parent.appendChild($ball);
+        }
+
+        for (let i = 0; i < balls.length; i++){
+            setTimeout(() => {
+                lottoBalls(balls[i], $result);
+            }, 1000 * (i + 1));
+        }
+
+        const $bonus = document.querySelector('#bonus');
+        setTimeout(() => {
+            lottoBalls(bonusNum, $bonus);
+        }, 7000);
+
+        //7. 공에 색깔 입히기
+
     </script>
 </body>
 </html>
