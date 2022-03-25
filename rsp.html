@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #computer {
+            width : 142px;
+            height : 200px;
+        }
+    </style>
+</head>
+<body>
+    <div id = 'computer'></div>
+    <div>
+        <button id = 'scissors' class = 'btn'>가위</button>
+        <button id = 'rock' class = 'btn'>바위</button>
+        <button id = 'paper' class = 'btn'>보</button>
+    </div>
+    <div id = 'score'>0</div>
+    <script>
+        //가위바위보 게임
+        const $computer = document.querySelector('#computer');
+        const $scissors = document.querySelector('#scissors');
+        const $rock = document.querySelector('#rock');
+        const $paper = document.querySelector('#paper');
+        const $score = document.querySelector('#score');
+        const IMG_URL = './rsp.png';
+        //rsp.png -> 가위, 바위, 보가 합쳐진 하나의 이미지
+        //서버에 이미지를 요청하는 횟수를 줄이기 위함이며 이미지 스프라이트(image sprite)라고 함
+        //이미지가 하나로 합쳐져 있으므로 CSS와 자바스크립트로 적절히 잘라서 화면에 표시해야 함
+        $computer.style.background = `url(${IMG_URL}) 0 0`;
+        //`url(${IMG_URL}) 0 0` -> url(주소), x좌표, y좌표 (가위)
+        /*
+        $computer.style.background = `url(${IMG_URL}) -220px 0`;//(바위)
+        $computer.style.background = `url(${IMG_URL}) -440px 0`;//(보)
+        */
+
+        //가위 바위 보 객체로 묶기
+        //y좌표는 모두 0이므로 x좌표만 사용하면 됨
+        const rspX = {
+            scissors: '0',
+            rock: '-220px',
+            paper: '-440px',
+        };
+        $computer.style.backgroundSize = 'auto 200px'; // 가로(auto), 세로(200px), 가로세로 비율을 유지하면서 세로 길이가 200px이 될 때까지 이미지를 줄임
+    </script>
+</body>
+</html>
